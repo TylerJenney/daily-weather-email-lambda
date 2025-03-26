@@ -1,0 +1,11 @@
+# Terraform build cache & sensitive files
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Your Lambda zip package
+lambda.zip
