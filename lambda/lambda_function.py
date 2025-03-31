@@ -4,16 +4,16 @@ import requests
 import boto3
 
 
-# force deploy 002
+
 
 
 def lambda_handler(event, context):
-    # Step 1: Weather API setup
+    #  Weather API setup
     city = "Auburn,GA,US"
     api_key = os.environ['WEATHER_API_KEY']
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&units=imperial&appid={api_key}"
 
-    # Step 2: Make API request
+    #  Make API request
     response = requests.get(url)
     if response.status_code != 200:
         return {
@@ -21,13 +21,13 @@ def lambda_handler(event, context):
             'body': json.dumps(f"Failed to fetch weather: {response.text}")
         }
 
-    # Step 3: Parse weather data
+    #  Parse weather data
     weather_data = response.json()
     temp = weather_data['main']['temp']
     condition = weather_data['weather'][0]['description']
     humidity = weather_data['main']['humidity']
 
-    # Step 4: Format email message
+    #  Format email message
     message = (
         f"Good morning!\n\n"
         f"Here's your weather update for Auburn, GA:\n"
@@ -37,7 +37,7 @@ def lambda_handler(event, context):
         f"Have a great day!"
     )
 
-    # Step 5: Send the email via SES
+    #  Send the email via SES
     ses = boto3.client('ses', region_name='us-east-1')
 
     response = ses.send_email(
