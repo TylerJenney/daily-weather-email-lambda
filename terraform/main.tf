@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_iam_role" "lambda_exec" {
-  name = "lambda_execution_role"
+  name = "lambda_execution_role_v2"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -17,7 +17,7 @@ resource "aws_iam_role" "lambda_exec" {
 }
 
 resource "aws_iam_policy" "ses_policy" {
-  name   = "AllowSES"
+  name   = "AllowSES_v2"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -34,13 +34,16 @@ resource "aws_iam_role_policy_attachment" "attach_ses_policy" {
 }
 
 resource "aws_lambda_function" "weather_email" {
-  function_name = "weather_email_lambda"
+  function_name = "weather_email_lambda_v2"
   runtime       = "python3.11"
   role          = aws_iam_role.lambda_exec.arn
   handler       = "lambda_function.lambda_handler"
 
   filename         = "${path.module}/../lambda.zip"
-  source_code_hash = filebase64sha256("${path.module}/../lambda.zip") # force update 003
+ source_code_hash = filebase64sha256("${path.module}/../lambda.zip") # force update 010
+
+
+
 
   environment {
     variables = {
